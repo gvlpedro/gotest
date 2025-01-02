@@ -12,6 +12,7 @@ func main() {
 	userHandler := handler.UserHandler{}
 	app.Use(authenticate)
 	app.GET("/user", userHandler.HandleUserShow)
+	
 	app.Start(":3000")
 }
 

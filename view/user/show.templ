@@ -15,8 +15,8 @@ func getAuthenticatedUser(c context.Context) string {
 }
 
 templ Show(user model.User) {
-	<h1>From context: { getAuthenticatedUser(ctx) } </h1>
 	@layout.Base() {
-		<h1>Hello { user.Email }</h1>
+        <h3> context: { getAuthenticatedUser(ctx) } </h3>
+		<p> Hi { user.Email }:</p>
 	}
 }
