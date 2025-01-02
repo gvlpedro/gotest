@@ -1,12 +1,22 @@
 package user
 
 import (
-    "github.com/gvlpedro/gotest/view/layout"
-    "github.com/gvlpedro/gotest/model"
+	"context"
+	"github.com/gvlpedro/gotest/model"
+	"github.com/gvlpedro/gotest/view/layout"
 )
 
-templ Show(user model.User){
-    @layout.Base(){
-        <h1> Hello {user.Email}</h1>
-    }
+func getAuthenticatedUser(c context.Context) string {
+	user, ok := c.Value("email").(string)
+	if !ok {
+		return ""
+	}
+	return user
+}
+
+templ Show(user model.User) {
+	<h1>From context: { getAuthenticatedUser(ctx) } </h1>
+	@layout.Base() {
+		<h1>Hello { user.Email }</h1>
+	}
 }
