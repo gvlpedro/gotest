@@ -1,5 +1,12 @@
 package user
 
-templ Show(){
-    <h1> Hello world</h1>
+import (
+    "github.com/gvlpedro/gotest/view/layout"
+    "github.com/gvlpedro/gotest/model"
+)
+
+templ Show(user model.User){
+    @layout.Base(){
+        <h1> Hello {user.Email}</h1>
+    }
 }
