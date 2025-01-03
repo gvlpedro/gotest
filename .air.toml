@@ -1,7 +1,7 @@
 [build]
   args_bin = []
   bin = "./tmp/main"
-  cmd = "templ generate && go build -o tmp/main ./cmd"
+  cmd = "./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css && templ generate && go build -o tmp/main ./cmd"
   delay = 0
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
@@ -24,7 +24,7 @@
 
 [color]
   app = ""
-  build = "yellow"
+  build = "yellow"/Users/pedro/gotth/gotth-example/internal/templates/home.templ
   main = "magenta"
   runner = "green"
   watcher = "cyan"

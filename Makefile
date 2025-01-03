@@ -2,6 +2,8 @@
 help: ## print make targets 
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+## Installation
+
 .PHONY: install-air
 install-air: ## Installs the air build reload system using 'go install'
 	go install github.com/air-verse/air@latest
@@ -26,10 +28,9 @@ install-tailwindcss-mac: ## Installs the tailwindcss CLI for macOS
 	chmod +x tailwindcss-macos-x64
 	mv tailwindcss-macos-x64 tailwindcss
 
-.PHONY: templ-watch
-templ-watch: ## templ-watch
-	@templ generate --watch
+### Run!
 
-.PHONY: run
-run: ## run
-	go run cmd/main.go && air
+.PHONY: setup
+run: ## First execution, then just execute `air`
+	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css
+	air

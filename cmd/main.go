@@ -2,17 +2,28 @@ package main
 
 import (
 	"context"
+	"log"
+	"os"
 
 	"github.com/gvlpedro/gotest/handler"
+	store "github.com/gvlpedro/gotest/internal/storage"
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
+	logger := log.New(os.Stdout, "[Test] ", log.LstdFlags)
+
 	app := echo.New()
 	userHandler := handler.UserHandler{}
+
+	logger.Print("Creating guests store..")
+	guestDb := store.NewGuestStore(logger)
+	guestDb.AddGuest(store.Guest{Name: "admin", Email: "admin@email.com"})
+
 	app.Use(authenticate)
+	app.Static("/static", "static")
 	app.GET("/user", userHandler.HandleUserShow)
-	
+
 	app.Start(":3000")
 }
 
