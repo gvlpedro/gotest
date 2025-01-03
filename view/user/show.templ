@@ -3,7 +3,6 @@ package user
 import (
 	"context"
 	"github.com/gvlpedro/gotest/model"
-	"github.com/gvlpedro/gotest/view/layout"
 )
 
 func getAuthenticatedUser(c context.Context) string {
@@ -15,8 +14,9 @@ func getAuthenticatedUser(c context.Context) string {
 }
 
 templ Show(user model.User) {
-	@layout.Base() {
-        <h3> context: { getAuthenticatedUser(ctx) } </h3>
-		<p> Hi { user.Email }:</p>
-	}
+	/*@layout.Base() {
+		<h3>context: { getAuthenticatedUser(ctx) } </h3>
+		<p>Hi! { user.Email }</p>
+		<p>Form: </p>
+	}*/
 }
