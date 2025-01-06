@@ -1,0 +1,18 @@
+// navigation
+// https://daisyui.com/components/menu
+package components
+
+templ Menu() {
+	<ul class="menu rounded-box bg-base-300">
+		{ children... }
+	</ul>
+}
+
+templ MenuItem(label string, attrs templ.Attributes) {
+	<li>
+		<a { attrs... }>{ label }</a>
+		<ul>
+			{ children... }
+		</ul>
+	</li>
+}

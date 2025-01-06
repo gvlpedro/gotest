@@ -12,11 +12,12 @@ install-air: ## Installs the air build reload system using 'go install'
 .PHONY: go-install-templ
 install-templ: ## Installs the templ Templating system for Go
 	go install github.com/a-h/templ/cmd/templ@latest
-	go get -u github.com/a-h/templ
 
-.PHONY: install-echo
-install-echo: ## Installs echo server system for Go
+.PHONY: install-lib
+install-lib: ## Installs libraries
+	go get -u github.com/a-h/templ
 	go get github.com/labstack/echo/v4
+	go get github.com/haatos/goshipit
 
 .PHONY: install-tailwindcss
 install-tailwindcss: ## Installs the tailwindcss cli
@@ -35,8 +36,8 @@ install-tailwindcss-mac: ## Installs the tailwindcss CLI for macOS
 #####################
 ### Run!
 
-.PHONY: run
-run: ## same than 'air' command to execute the app (just to know what is executing air)
+.PHONY: build
+build: ## same than 'air' command to execute the app (just to know what is executing air)
 	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css
 	templ fmt .
 	templ generate
@@ -46,8 +47,15 @@ run: ## same than 'air' command to execute the app (just to know what is executi
 #####################
 ### Force clean up
 
-.PHONY: clean
-clean: ## force clean
+.PHONY: reload
+reload: ## force clean and build
+	kill -9 $(lsof -ti:3001) || true
+	templ generate
+	go build -o tmp/main ./cmd
+	go run cmd/main.go
+
+.PHONY: fullreload
+fullreload: ## force clean and build
 	pkill -9 air || true
 	kill -9 $(lsof -ti:3001) || true
 	find . -type f -name '*_templ.go' -exec rm {} \;
@@ -55,7 +63,7 @@ clean: ## force clean
 	go clean -cache
 	templ generate
 	templ fmt .
-	go mod tidy
+	go build -o tmp/main ./cmd
 	echo "Refresh page using [Cmd + Shift + R]"
 
 

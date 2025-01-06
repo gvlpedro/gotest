@@ -13,7 +13,7 @@ import (
 func main() {
 	logger := log.New(os.Stdout, "[Test] ", log.LstdFlags)
 	app := echo.New()
-	userHandler := handler.UserHandler{}
+	homeHandler := handler.HomeHandler{}
 
 	logger.Print("Creating guests store..")
 	guestDb := store.NewGuestStore(logger)
@@ -21,8 +21,10 @@ func main() {
 
 	app.Use(authenticate)
 	app.Static("/static", "static")
-	app.GET("/user", userHandler.HandleUserShow)
-	logger.Print("Serving site at http://localhost:3001/user ..")
+	app.GET("/", homeHandler.HandleHomeShow)
+	app.GET("/home", homeHandler.HandleHomeShow)
+	app.POST("/signup", homeHandler.SignUp)
+	logger.Print("Serving site at http://localhost:3001/ ..")
 
 	app.Start(":3001")
 }
