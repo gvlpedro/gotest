@@ -9,12 +9,15 @@ templ SignUpFormWidget(
 	signupValues model.SignUpValues,
 	errors map[string]string,
 ) {
-	<div class="w-full max-w-xs mx-auto pt-12 pb-4">
-		<h2 class="text-xl text-center mb-8">Sign Up</h2>
+	<br/>
+	<br/>
+	<div class="w-full max-w-xs mx-auto pt-1">
+		<h2 class="text-m text-center mb-8">Sign Up</h2>
 		@OAuthButtons()
 		<div class="divider !my-6">OR</div>
 		@SignUpForm(signupValues, errors)
 	</div>
+	<br/>
 }
 
 templ SignUpForm(
@@ -25,11 +28,11 @@ templ SignUpForm(
 		@components.Form(
 			templ.Attributes{
 				"hx-post":    "http://localhost:3001/signup",
-				"hx-ext":   "json-enc",
+				"hx-ext":     "json-enc",
 				"hx-trigger": "submit",
 				"class":      "space-y-1",
 				"id":         "signup_form",
-                "hx-target": "#signup-wrapper",
+				"hx-target":  "#signup-wrapper",
 			},
 		) {
 			@components.Input(
@@ -105,7 +108,7 @@ templ SignUpForm(
 }
 
 templ SignUpOK(Email string) {
-    <div>You are in! check your inbox { Email } to validate your account.</div>
+	<div>You are in! check your inbox { Email } to validate your account.</div>
 }
 
 templ OAuthButtons() {

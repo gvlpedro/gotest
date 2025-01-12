@@ -14,6 +14,7 @@ func main() {
 	logger := log.New(os.Stdout, "[Test] ", log.LstdFlags)
 	app := echo.New()
 	homeHandler := handler.HomeHandler{}
+	chatHandler := handler.ChatHandler{}
 
 	logger.Print("Creating guests store..")
 	guestDb := store.NewGuestStore(logger)
@@ -23,6 +24,7 @@ func main() {
 	app.Static("/static", "static")
 	app.GET("/", homeHandler.HandleHomeShow)
 	app.GET("/home", homeHandler.HandleHomeShow)
+	app.GET("/chat", chatHandler.HandleChatShow)
 	app.POST("/signup", homeHandler.SignUp)
 	logger.Print("Serving site at http://localhost:3001/ ..")
 

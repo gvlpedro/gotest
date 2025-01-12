@@ -13,7 +13,7 @@ type HomeHandler struct{}
 func (h HomeHandler) HandleHomeShow(c echo.Context) error {
 	var signUpValues = model.SignUpValues{}
 	var errors = make(map[string]string)
-	return render(c, layout.Base(home.Home(signUpValues, errors), "Test htmx", "/"))
+	return render(c, layout.Base(home.Home(signUpValues, errors), "Home", "/"))
 }
 
 func (h HomeHandler) SignUp(c echo.Context) error {

@@ -12,12 +12,12 @@ templ header(title string) {
 }
 
 templ footer() {
-	<footer class="bg-gray-800 text-gray-400 text-sm py-4">
+	<footer class="bg-gray-800 text-gray-400 text-sm m-0 py-1">
 		<div class="container mx-auto text-center">
-			<p class="mt-2">
-				&copy; 2025
-				<a href="/privacy" class="text-gray-300 hover:text-white">Política de privacidad</a> |
-				<a href="/terms" class="text-gray-300 hover:text-white">Términos de uso</a>
+			<p>
+				© 2025
+				<a href="/privacy" class="text-gray-300 hover:text-white">Licence</a> |
+				<a href="/terms" class="text-gray-300 hover:text-white">Pricing</a>
 			</p>
 		</div>
 	</footer>
@@ -36,7 +36,7 @@ templ nav(activeLink string) {
 				<nav aria-label="Global" class="hidden md:block">
 					<ul class="flex items-center gap-6 text-sm">
 						<li>
-							if activeLink == "/" {
+							if activeLink == "/" || activeLink == "/home" {
 								<a class="block rounded-md px-5 py-2.5 text-sm font-medium text-orange-600 transition" href="/">
 									Home
 								</a>
@@ -46,6 +46,20 @@ templ nav(activeLink string) {
 									href="/"
 								>
 									Home
+								</a>
+							}
+						</li>
+						<li>
+							if activeLink == "/demo" {
+								<a class="block rounded-md px-5 py-2.5 text-sm font-medium text-orange-600 transition" href="/">
+									Demo
+								</a>
+							} else {
+								<a
+									class="block rounded-md px-5 py-2.5 text-sm font-medium text-white transition hover:bg-orange-700 dark:hover:bg-orange-500 dark:hover:text-white"
+									href="/demo"
+								>
+									Demo
 								</a>
 							}
 						</li>
@@ -74,14 +88,6 @@ templ nav(activeLink string) {
 							Login
 						</a>
 					</div>
-					<div class="sm:flex sm:gap-4">
-						<a
-							class="block rounded-md px-5 py-2.5 text-sm font-medium text-white transition hover:bg-orange-700 dark:hover:bg-orange-500"
-							href="#"
-						>
-							Signup
-						</a>
-					</div>
 					<button
 						class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
 					>
@@ -107,7 +113,7 @@ templ Base(contents templ.Component, title string, activeLink string) {
 	@header(title)
 	<body class="flex flex-col h-full bg-slate-900">
 		@nav(activeLink)
-		<main class="flex-1 container ">
+		<main class="flex-1 container m-0 pt-0">
 			@contents
 		</main>
 		@footer()
@@ -115,18 +121,4 @@ templ Base(contents templ.Component, title string, activeLink string) {
 		<script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 	</body>
-	<!--https://www.submitjson.com/blog/htmx-post-json
-	<script>
-	htmx.defineExtension('submitjson', {
-		onEvent: function (name, evt) {
-		if (name === "htmx:configRequest") {
-			evt.detail.headers['Content-Type'] = "application/json"
-		}
-		},
-		encodeParameters: function(xhr, parameters, elt) {
-			xhr.overrideMimeType('text/json');
-			return return (JSON.stringify(parameters));
-		}
-	})
-	</script>-->
 }

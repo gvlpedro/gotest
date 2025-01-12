@@ -25,15 +25,15 @@ templ Input(props InputProps) {
 		id={ fmt.Sprintf("%s-div", props.Name) }
 		class="w-full"
 	>
-		<label class={ "form-control w-full", }>
+		<label class={ "form-control w-full text-sm", }>
 			if props.Label != "" {
 				<div class="py-1 pr-2">
-					<span class="label-text leading-4">{ props.Label }</span>
+					<span class="label-text leading-3">{ props.Label }</span>
 				</div>
 			}
 			<div
 				class={
-					"relative input !px-0 bg-transparent w-full flex items-center flex-grow",
+					"relative input !px-0 bg-transparent w-full flex items-center flex-grow input-bordered rounded-sm",
 					templ.KV("!pl-3", props.Icon != nil),
 					templ.KV("input-error", props.Err != ""),
 					templ.KV("pb-1", props.Label != ""),
@@ -76,7 +76,7 @@ templ Input(props InputProps) {
 			</div>
 			<span
 				id={ fmt.Sprintf("%s-error", props.Name) }
-				class="text-error h-4 text-xs pt-1"
+				class="text-error h-2 text-xs pt-1"
 			>
 				{ props.Err }
 			</span>

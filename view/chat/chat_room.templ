@@ -1,0 +1,104 @@
+package chat
+
+import "github.com/gvlpedro/gotest/view/components"
+
+templ ChatWindow() {
+	<script>
+        async function createDataChannelToken() {
+            const local = new RTCPeerConnection();
+            const lchannel = local.createDataChannel('room1');
+            local.onicecandidate = e => console.log('ICE Candidate:', JSON.stringify(local.localDescription));
+            lchannel.onopen = () => console.log("Data channel is open.");
+            lchannel.onclose = () => console.log("Data channel is closed.");
+            lchannel.onmessage = ({data}) => console.log("Received message:", data);
+            try {
+                const token = local.createOffer().then(o => local.setLocalDescription(o)
+                console.log("Generated token:", token);
+
+                await sendTokenToServer(token);
+            } catch (error) {
+                console.error("Error generating token:", error);
+            }
+        }
+        async function sendTokenToServer(token) {
+            const response = await fetch('http://localhost:3001/handshake/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: token })
+            });
+
+            if (response.ok) {
+				const data = await response.json();
+				console.log("Server response:", data); 
+
+				const isFirst = data.is_first;
+				const tokenFromServer = data.token;
+				console.log("is_first:", isFirst);
+				console.log("token:", tokenFromServer);
+
+				if(!isFirst){
+					    const remote = new RTCPeerConnection();
+						remote.onicecandidate =  e => console.log(JSON.stringify(remote.localDescription));
+						remote.ondatachannel = ({channel}) => {
+							channel.onopen = () => console.log("open");
+							channel.onclose = () => console.log("close");
+							channel.onmessage = ({data}) => console.log(data);
+							remote.channel = channel;
+						}
+						remote.setRemoteDescription(tokenFromServer);
+						remote.createAnswer().then(a => console.log(remote.setLocalDescription(a)));
+						remote.channel.send("sent from remote!");
+				}else{
+      					local.setRemoteDescription(tokenFromServer);
+						lchannel.send("sent from first user");
+				}
+            } else {
+                console.error("Server error:", response.statusText);
+            }
+        }
+        window.onload = () => {
+			console.log("disabled data channel function");
+            //createDataChannelToken();
+        };
+		function createRemoteToken(token) {
+			const remote = new RTCPeerConnection();
+			remote.onicecandidate =  e => console.log(JSON.stringify(remote.localDescription));
+			remote.ondatachannel = ({channel}) => {
+				channel.onopen = () => console.log("open");
+				channel.onclose = () => console.log("close");
+				channel.onmessage = ({data}) => console.log(data);
+				remote.channel = channel;
+			}
+            
+        }
+    </script>
+	<section class="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-[20%,80%] sm:items-start bg-white mx-auto px-4 sm:px-8 h-full w-full" id="dashboard-wrapper">
+		<div class="text-center py-4 flex items-start" id="toolbox">
+			@components.Multioption("Domains", components.MultioptionProps{Values: map[string]string{"Feature 1": "f1", "Feature 2": "f2", "Feature 3": "f3"}})
+		</div>
+		<div class="flex justify-center items-start w-full px-4" id="dashboard">
+			<div class="bg-gray-10 p-8 w-full max-w-md">
+				<div class="bg-gray-50 p-6 mx-auto rounded-lg shadow-md text-center" id="card">
+					<h2 class="text-sm font-semibold text-gray-800 mb-2">Product name</h2>
+					<p class="text-sm text-gray-600">Feature 1 likes to 0 people</p>
+					<p class="text-sm text-gray-600">Feature 2 likes to 0 people</p>
+					<p class="text-sm text-gray-600">Feature 3 likes to 0 people</p>
+					<p class="text-sm text-gray-300">view 0 times</p>
+				</div>
+			</div>
+			<div class="flex justify-center items-center pt-4">
+				@components.Timeline(
+					components.TimelineProps{
+						{Start: "2024-01", Middle: components.TimelineCheckbox(true), End: "First Macintosh"},
+						{Start: "2024-02", Middle: components.TimelineCheckbox(true), End: "iMac"},
+						{Start: "2024-03", Middle: components.TimelineCheckbox(false), End: "iPod"},
+						{Start: "2024-04", Middle: components.TimelineCheckbox(false), End: "iPhone"},
+						{Start: "2024-05", Middle: components.TimelineCheckbox(false), End: "Apple Watch"},
+					},
+				)
+			</div>
+		</div>
+	</section>
+}

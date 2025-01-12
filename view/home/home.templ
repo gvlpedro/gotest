@@ -3,7 +3,9 @@ package home
 import "github.com/gvlpedro/gotest/model"
 
 templ Home(SignupValues model.SignUpValues, Errors map[string]string) {
-	<section class="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-3 sm:items-center bg-white mx-auto px-4 sm:px-8" id="signup-wrapper">
-		@SignUpFormWidget(SignupValues, Errors)
-	</section>
+	<div class="h-full">
+		<section class="overflow-auto min-h-screen bg-gray-50 sm:grid sm:grid-cols-3 sm:items-center bg-white mx-auto px-4 sm:px-8" id="signup-wrapper">
+			@SignUpFormWidget(SignupValues, Errors)
+		</section>
+	</div>
 }
